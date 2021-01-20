@@ -66,7 +66,7 @@ RUN \
 	/var/lib/syncthing && \
  mkdir -p /data1 /data2 && \
  chown abc:abc /data1 && \
- chwon abc:abc /data2
+ chown abc:abc /data2
  	
 # copy files from build stage and local files
 COPY --from=buildstage /tmp/sync/syncthing /usr/bin/
