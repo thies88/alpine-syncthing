@@ -1,9 +1,11 @@
-# Appname
+# Syncthing
 
-Image based on Ubuntu Core and monitored by s6-overlay.
+Image based on Alpine Linux and monitored by s6-overlay.
 
 #### weekly builds @Saturday at 3:00 (AM)
-* Rebuilds new base image from scratch @https://partner-images.canonical.com/core/${REL}/current/ubuntu-${REL}-core-cloudimg-${ARCH}-root.tar.gz
+* Rebuilds new base image from scratch:
+Ubuntu: @https://partner-images.canonical.com/core/${REL}/current/ubuntu-${REL}-core-cloudimg-${ARCH}-root.tar.gz
+Alpine: @http://nl.alpinelinux.org/alpine
   * Base OS is updated
   * Packages are updated
   * Application within image(container) gets updated if new release is available. 
@@ -14,17 +16,20 @@ Image based on Ubuntu Core and monitored by s6-overlay.
 
 ```
 docker create \
-  --name=containername \
+  --name=syncthing \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Europe/Amsterdam \
-  -p 80:80 \
-  -p 443:443 `#optional` \
+  -p 8384:8384 \
+  -p 21027:21027 `#optional` \
+  -p 22000:22000 `#optional` \
   -v /path/to/config:/config \
+  -v /path/to/data1:/data1 `#optional` \
+  -v /path/to/data2:/data2 `#optional` \
   --restart unless-stopped \
-  thies88/imagename
+  thies88/syncthing
 ```
-After starting the container check log for instructions. go to https://ipdockerhost/spotweb
+Go to https://ipdockerhost:8384
 
 ### update your container:
 
@@ -38,7 +43,3 @@ Via Docker Run/Create
     -You can also remove the old dangling images: docker image prune
 
 Unraid users can use "Check for updates" within Unraid WebGui
-
-&nbsp;
-
-A custom base image built with [Ubuntu Core](https://partner-images.canonical.com) and [S6 overlay](https://github.com/just-containers/s6-overlay) Based on: https://github.com/linuxserver/docker-baseimage-ubuntu
